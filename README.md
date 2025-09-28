@@ -1,2 +1,2 @@
-# random-shrek-pic
-Get a random picture of Shrek
+# Random Shrek Pic
+Random Shrek Pic is a SaaS (Shrek-as-a-Service) that provides a random picture of Shrek
