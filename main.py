@@ -3,12 +3,19 @@ import random
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
-app = FastAPI()
+app = FastAPI(
+    title="Random Shrek Pic",
+    description="Get a random picture of Shrek",
+    version="0.1.0",
+)
 
 
 @app.get("/")
 async def index():
-    return {"Hello": "Shrek"}
+    return {
+        "Hello": "Shrek",
+        "version": app.version,
+    }
 
 
 @app.get("/random")
