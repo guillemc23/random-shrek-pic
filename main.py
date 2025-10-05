@@ -6,7 +6,7 @@ from fastapi.responses import RedirectResponse
 app = FastAPI(
     title="Random Shrek Pic",
     description="Get a random picture of Shrek",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 
@@ -18,8 +18,8 @@ async def index():
     }
 
 
-@app.get("/random")
-async def get_random_picture():
+@app.get("/shrek")
+async def get_random_shrek_picture():
     shrek_pics = [
         "https://static.wikia.nocookie.net/universalstudios/images/f/f2/Shrek2-disneyscreencaps.com-4369.jpg/revision/latest?cb=20250224023204",
         "https://sm.ign.com/t/ign_es/screenshot/default/sin-titulo-1_fmkx.1280.jpg",
@@ -35,3 +35,13 @@ async def get_random_picture():
     ]
 
     return RedirectResponse(random.choice(shrek_pics))
+
+
+@app.get("/toilet")
+async def get_random_toilet_picture():
+    toilet_pics = [
+        "https://static.wikia.nocookie.net/shrek/images/7/77/Shrek_outhouse.jpg/revision/latest?cb=20220714052753",
+        "https://i.ytimg.com/vi/3RvSkuKUPkg/hq720.jpg",
+    ]
+
+    return RedirectResponse(random.choice(toilet_pics))
