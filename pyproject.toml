@@ -1,6 +1,6 @@
 [project]
 name = "random-shrek-pic"
-version = "0.2.0"
+version = "0.3.0"
 description = "Get a random picture of Shrek"
 readme = "README.md"
 requires-python = ">=3.12"
