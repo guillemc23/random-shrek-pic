@@ -1,17 +1,21 @@
 repos:
-# Ruff
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.13.3
-  hooks:
-    # Run the linter.
-    - id: ruff-check
-      types_or: [ python, pyi ]
-      args: [ --fix ]
-    # Run the formatter.
-    - id: ruff-format
-      types_or: [ python, pyi ]
-  # GitLeaks
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.24.2
+  # UV
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.8.23
     hooks:
-      - id: gitleaks
+      - id: uv-lock # Update uv.lock if pyproject.toml changes
+      - id: uv-export # sync requirements.txt with uv.lock
+  # Ruff
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.3
+    hooks:
+      - id: ruff-check # Run the linter
+        types_or: [ python, pyi ]
+        args: [ --fix ]
+      - id: ruff-format # Run the formatter
+        types_or: [ python, pyi ]
+    # GitLeaks
+    - repo: https://github.com/gitleaks/gitleaks
+      rev: v8.24.2
+      hooks:
+        - id: gitleaks
