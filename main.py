@@ -6,11 +6,12 @@ from fastapi.responses import RedirectResponse
 app = FastAPI(
     title="Random Shrek Pic",
     description="Get a random picture of Shrek",
-    version="0.2.0",
+    version="0.3.0",
 )
 
 
 @app.get("/")
+@app.get("/info")
 async def index():
     return {
         "Hello": "Shrek",
@@ -40,8 +41,17 @@ async def get_random_shrek_picture():
 @app.get("/toilet")
 async def get_random_toilet_picture():
     toilet_pics = [
-        "https://static.wikia.nocookie.net/shrek/images/7/77/Shrek_outhouse.jpg/revision/latest?cb=20220714052753",
+        "https://static.wikia.nocookie.net/shrek/images/7/77/Shrek_outhouse.jpg",
         "https://i.ytimg.com/vi/3RvSkuKUPkg/hq720.jpg",
     ]
 
     return RedirectResponse(random.choice(toilet_pics))
+
+
+@app.get("/swamp")
+async def get_random_swap_picture():
+    swamp_pics = [
+        "https://static.wikia.nocookie.net/shrek/images/a/a7/Shrek%27s_Swamp_%28Shrek_Forever_After%29.jpg"
+    ]
+
+    return RedirectResponse(random.choice(swamp_pics))
