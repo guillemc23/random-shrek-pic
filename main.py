@@ -36,6 +36,7 @@ async def get_random_shrek_picture():
 
     return RedirectResponse(random.choice(shrek_pics))
 
+
 @app.get("/toilet")
 async def get_random_toilet_picture():
     toilet_pics = [
