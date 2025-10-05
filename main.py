@@ -47,6 +47,7 @@ async def get_random_toilet_picture():
 
     return RedirectResponse(random.choice(toilet_pics))
 
+
 @app.get("/swamp")
 async def get_random_swap_picture():
     swamp_pics = [
