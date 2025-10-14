@@ -11,3 +11,15 @@ repos:
     rev: v8.28.0
     hooks:
     - id: gitleaks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        files: '^data/.*\\.txt$'
+  - repo: local
+    hooks:
+      - id: txt-file-checks
+        name: Check TXT files for trailing spaces and duplicate lines
+        entry: python scripts/precommit_check_txts.py
+        language: system
+        files: '^data/.*\\.txt$'
