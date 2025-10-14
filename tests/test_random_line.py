@@ -22,7 +22,7 @@ def test_multiple_lines_stripped(tmp_path):
     lines = ["a\n", "b\n", "c\n"]
     p.write_text("".join(lines), encoding="utf-8")
     result = mod.random_line(p)
-    assert result in [l.strip() for l in lines]
+    assert result in [l.strip() for l in lines]  # noqa: E741
     # ensure no newline/carriage return characters remain
     assert "\n" not in result
     assert "\r" not in result
