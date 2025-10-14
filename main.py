@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
@@ -6,11 +7,32 @@ from fastapi.responses import RedirectResponse
 app = FastAPI(
     title="Random Shrek Pic",
     description="Get a random picture of Shrek",
-    version="0.3.0",
+    version="0.4.0",
 )
 
+SHREK_DATABASE = Path("data/shrek.txt")
+CURSED_DATABASE = Path("data/cursed.txt")
+TOILET_DATABASE = Path("data/toilet.txt")
+SWAMP_DATABASE = Path("data/swamp.txt")
 
-@app.get("/")
+
+def random_line(file_path: Path) -> str:
+    with Path.open(file_path, "r", encoding="utf-8") as f:
+        line = None
+        new_line = None
+        # Reading with reservoir sampling should be more efficient for big files, since it avoids loading everything onto memory
+        for i, new_line in enumerate(f, 1):
+            # If the chosen line includes a trailing newline ("\n" or "\r\n"), strip it
+            # so that RedirectResponse doesn't end up with a URL containing an encoded newline (%0A).
+            if random.randint(1, i) == 1:
+                line = new_line.strip()
+                return line
+        if new_line is not None:
+            return new_line.strip()
+        else:
+            raise ValueError(f"No lines found in file: {file_path}")
+
+
 @app.get("/info")
 async def index():
     return {
@@ -19,39 +41,22 @@ async def index():
     }
 
 
+@app.get("/")
 @app.get("/shrek")
 async def get_random_shrek_picture():
-    shrek_pics = [
-        "https://static.wikia.nocookie.net/universalstudios/images/f/f2/Shrek2-disneyscreencaps.com-4369.jpg/revision/latest?cb=20250224023204",
-        "https://sm.ign.com/t/ign_es/screenshot/default/sin-titulo-1_fmkx.1280.jpg",
-        "https://media.elcomercio.com/wp-content/uploads/2025/02/Shrek-5-trailer-1024x683.jpg",
-        "https://resizing.flixster.com/833TLn9JHRPgqmxIDgDHk-yE6Tw=/fit-in/705x460/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p27575_i_h10_ab.jpg",
-        "https://www.rollingstone.com/wp-content/uploads/2024/04/enduring-appeal-of-shrek.jpg?w=1581&h=1054&crop=1",
-        "https://www.cartoonbrew.com/wp-content/uploads/2024/07/shrek5.jpg",
-        "https://images.bauerhosting.com/legacy/empire-images/articles/5be1b60cfd0c0bc844479a97/shrek.jpg?ar=16%3A9&fit=crop&crop=top&auto=format&w=1440&q=80",
-        "https://static0.cbrimages.com/wordpress/wp-content/uploads/2022/04/Shrek_Swamp_Meme.jpg?w=1200&h=628&fit=crop,"
-        "https://www.looper.com/img/gallery/these-things-happen-in-every-single-shrek-movie/intro-1655497837.jpg",
-        "https://palomaynacho.com/wp-content/uploads/2023/11/shrek-animacion-original-1024x576.webp",
-        "https://hips.hearstapps.com/hmg-prod/images/shrek-64f9ceef56099.jpg?crop=0.565xw:1.00xh;0.218xw,0&resize=1200:*",
-    ]
-
-    return RedirectResponse(random.choice(shrek_pics))
+    return RedirectResponse(random_line(SHREK_DATABASE))
 
 
 @app.get("/toilet")
 async def get_random_toilet_picture():
-    toilet_pics = [
-        "https://static.wikia.nocookie.net/shrek/images/7/77/Shrek_outhouse.jpg",
-        "https://i.ytimg.com/vi/3RvSkuKUPkg/hq720.jpg",
-    ]
-
-    return RedirectResponse(random.choice(toilet_pics))
+    return RedirectResponse(random_line(TOILET_DATABASE))
 
 
 @app.get("/swamp")
-async def get_random_swap_picture():
-    swamp_pics = [
-        "https://static.wikia.nocookie.net/shrek/images/a/a7/Shrek%27s_Swamp_%28Shrek_Forever_After%29.jpg"
-    ]
+async def get_random_swamp_picture():
+    return RedirectResponse(random_line(SWAMP_DATABASE))
 
-    return RedirectResponse(random.choice(swamp_pics))
+
+@app.get("/cursed")
+async def get_random_cursed_picture():
+    return RedirectResponse(random_line(CURSED_DATABASE))
